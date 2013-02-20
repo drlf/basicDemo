@@ -2,7 +2,7 @@
 	buffer = require('buffer'),
 	stream = require('stream');
 
-var hugeFile = 'data.txt';
+var hugeFile = 'fsreadstream.js';
 
 var buff = new Buffer(4);
 var ui16 = new Uint16Array(buff);
@@ -19,8 +19,15 @@ console.log(buff);
 
 console.log(Buffer.isBuffer(buff));
 //
-var st = fs.createReadStream(hugeFile);
-st.on('open ',function(){
-	console.log('open');
+var st = fs.createReadStream(hugeFile,{ encoding: 'ascii'});
+st.on('data', function(chunk) {
+	console.log(chunk);
 });
+st.on('open ',function(){
+	console.log('stream open');
+});
+st.on('end', function() {
+        //req.end();
+        console.log('stream closed!')
+    });
 //fs.createReadStream('sample.txt', {start: 90, end: 99});
